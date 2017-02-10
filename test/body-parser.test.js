@@ -15,10 +15,9 @@ describe('body-parsing middleware', () => {
     }
 
     it('reads request stream', () => {
-        req.on('event', (stream) => {
+        const data = {ihate: "this"};
+        req.emit('event', JSON.stringify(data))
 
-        });
-        req.emit('event', data)
     });
 
     it('asigns to req.body', () => {
