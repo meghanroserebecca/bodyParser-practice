@@ -2,7 +2,7 @@ const assert = require('chai').assert;
 const createLogger = require('../lib/logger');
 
 describe('logging middleware', () => {
-    
+    git
     it('logs request method and url, then calls next', done => {
 
         let logged = '';
