@@ -1,15 +1,13 @@
-const chai = require('chai');
-const assert = chai.assert;
-
 const EventEmitter = require('events');
-
 const parser = require('../lib/body-parser');
+const chai = require('chai');
+
+const assert = chai.assert;
 
 describe('body-parsing middleware', () => {
 
-    const req = new EventEmitter();
-
     it('reads request stream and adds it to req.body', () => {
+        const req = new EventEmitter();
         const data = { ihate: 'bananas' };
 
         parser.bodyParser(req, {}, () => {
@@ -22,14 +20,16 @@ describe('body-parsing middleware', () => {
     });
 
     it('calls next if there is no body', () => {
-        const data = {};
+        const req = new EventEmitter();
+        const data = '';
 
         parser.bodyParser(req, {}, () => {
             assert.notProperty(req, 'body');
         });
 
-        req.emit('event', JSON.stringify(data));
+        req.emit('event', data);
         req.emit('end');
 
     });
+
 });
