@@ -3,28 +3,33 @@ const assert = chai.assert;
 
 const EventEmitter = require('events');
 
-const createBodyParser = require('../lib/body-parser');
+const parser = require('../lib/body-parser');
 
 describe('body-parsing middleware', () => {
 
     const req = new EventEmitter();
 
-    const next = () => {
-        //stuff there
-        done();
-    }
+    it('reads request stream and adds it to req.body', () => {
+        const data = { ihate: 'bananas' };
 
-    it('reads request stream', () => {
-        const data = {ihate: "this"};
-        req.emit('event', JSON.stringify(data))
+        parser.bodyParser(req, {}, () => {
+            assert.deepEqual(req.body, data);
+        });
 
-    });
-
-    it('asigns to req.body', () => {
+        req.emit('event', JSON.stringify(data));
+        req.emit('end');
 
     });
 
     it('calls next if there is no body', () => {
+        const data = {};
+
+        parser.bodyParser(req, {}, () => {
+            assert.notProperty(req, 'body');
+        });
+
+        req.emit('event', JSON.stringify(data));
+        req.emit('end');
 
     });
 });
